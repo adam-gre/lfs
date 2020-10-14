@@ -15,6 +15,16 @@ h2 {
   font-weight: 500;
 }
 
+h3 {
+  font-family: 'Work Sans', Calibri, sans-serif;
+  font-weight: 500;
+}
+
+h4 {
+  font-family: 'Work Sans', Calibri, sans-serif;
+  font-weight: 500;
+}
+
 p {
   font-family: 'Work Sans', Calibri, sans-serif;
   font-weight: 400;
@@ -64,7 +74,6 @@ p {
 }
 
 .nav-box {
-  border-radius: 10px;
   height: 3.5vw;
   width: 3.5vw;
   text-align: center;
@@ -78,4 +87,14 @@ p {
 
 .rbc-event {
   font-size: 0.5;
+}
+
+.winner {
+  background: rgb(0,138,255);
+  background: linear-gradient(173deg, rgba(0,138,255,1) 0%, rgba(85,175,251,1) 100%)!important;
+  color: white;
+}
+.winner::before {
+  background: url(./flag.svg)!important;
+  color: white;
 }

@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import { Flex, Divider, Box, Columns, Card, Container, Heading, Text } from 'bumbag';
+import { ProgressBar, Avatar, Divider, Box, Columns, Card, Container, Heading, Text } from 'bumbag';
 import Skeleton from "react-loading-skeleton";
-import { FaTruck, FaCalendar } from 'react-icons/fa';
+import { FaTrophy, FaTruck, FaCalendar } from 'react-icons/fa';
 import { MdAnnouncement } from 'react-icons/md';
 import EventCalendar from '../Calendar.js';
 
 class Dashboard extends Component {
     state = {
-        income: 2,
+        income: 2000,
         incomeUnit: "£",
-        distance: 5,
+        distance: 5500,
         distanceUnit: "miles",
-        events: 12,
+        events: 1200,
         activity: [
             {
                 type: "job",
@@ -41,16 +41,35 @@ class Dashboard extends Component {
                 image: "",
                 addedBy: "76561198183828141"
             }
+        ],
+        weekWinner: [
+            {
+                steamId: "76561198183828141",
+                name: "Panda",
+                jobs: 15,
+                income: 425100
+            }
         ]
     };
 
     render() {
-        var { income, incomeUnit, distance, distanceUnit, events, activity, staffPicks } = this.state;
+        var { income, incomeUnit, distance, distanceUnit, events, activity, staffPicks, weekWinner } = this.state;
         return (
             <Container isFluid padding="major-4">
                 <Heading use="h4" marginBottom="30px">Dashboard</Heading>
                     <Columns>
                         <Columns.Column>
+                            <Card standalone variant="shadowed" marginBottom="15px" className="winner">
+                                <div className="winner-flags">
+                                    <Card.Header display="block">
+                                        <Avatar margin="auto" initials="🏆" variant="circle" palette="#008aff" size="medium" marginBottom="2vmin" />
+                                        <Card.Title alignX="center" margin="auto">Congratulations, {weekWinner[0].name}!</Card.Title>
+                                    </Card.Header>
+                                    <Card.Content>
+                                        <Text color="white" fontSize="200" alignX="center" textAlign="center">{weekWinner[0].name} completed {weekWinner[0].jobs} jobs this week and earned £{weekWinner[0].income.toLocaleString(undefined, {maximumFractionDigits:2})}!</Text>
+                                    </Card.Content>
+                                </div>
+                            </Card>
                             <Card standalone variant="shadowed" marginBottom="15px">
                                 <Card.Header>
                                     <Card.Title>Your statistics</Card.Title>
@@ -61,7 +80,7 @@ class Dashboard extends Component {
                                         <Box backgroundColor="white" padding="0.5rem" textAlign="center">
                                             <Text color="text100" fontSize="150">JOB INCOME</Text>
                                             <br />
-                                            {incomeUnit + income || <Skeleton count={2} />}
+                                            {incomeUnit + income.toLocaleString(undefined, {maximumFractionDigits:2}) || <Skeleton count={2} />}
                                         </Box>
                                     </Columns.Column>
                                     <Divider orientation="vertical" />
@@ -69,7 +88,7 @@ class Dashboard extends Component {
                                         <Box backgroundColor="white" padding="0.5rem" textAlign="center">
                                             <Text color="text100" fontSize="150">DISTANCE DRIVEN</Text>
                                             <br />
-                                            {distance + " " + distanceUnit || <Skeleton count={2} />}
+                                            {distance.toLocaleString(undefined, {maximumFractionDigits:0}) + " " + distanceUnit || <Skeleton count={2} />}
                                         </Box>
                                     </Columns.Column>
                                     <Divider orientation="vertical" />
@@ -77,7 +96,7 @@ class Dashboard extends Component {
                                         <Box backgroundColor="white" padding="0.5rem" textAlign="center">
                                             <Text color="text100" fontSize="150">EVENTS ATTENDED</Text>
                                             <br />
-                                            {events || <Skeleton count={2} />}
+                                            {events.toLocaleString(undefined, {maximumFractionDigits:2}) || <Skeleton count={2} />}
                                         </Box>
                                     </Columns.Column>
                                     </Columns>
