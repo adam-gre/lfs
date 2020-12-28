@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import './react-big-calendar.css';
 
+body {
+  overflow-x: hidden;
+}
+
 .App {
   text-align: center;
 }
@@ -94,7 +98,73 @@ p {
   background: linear-gradient(173deg, rgba(0,138,255,1) 0%, rgba(85,175,251,1) 100%)!important;
   color: white;
 }
-.winner::before {
-  background: url(./flag.svg)!important;
-  color: white;
+
+
+.bg-blob-1 {
+  position: absolute;
+  z-index: 0;
+}
+
+.bg-blob-2 {
+  position: absolute;
+  z-index: 0;
+}
+
+@media only screen and (min-width: 1280px) {
+  .bg-blob-1 {
+    bottom: 0%;
+    left: -20%;
+  }
+
+  .bg-blob-2 {
+    top: -25%;
+    right: -10%;
+  }
+
+  .login-input {
+    min-width: 400px;
+    width: 20vw;
+  }
+}
+
+
+@media only screen and (min-width: 768px) and (max-width: 1280px) {
+  .bg-blob-1 {
+    display: none;
+  }
+
+  .bg-blob-2 {
+    top: -25%;
+    right: -10%;
+    height: 50vw;
+  }
+
+  .login-input {
+    min-width: 400px;
+    width: 20vw;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .bg-blob-1 {
+    display: none;
+  }
+
+  .bg-blob-2 {
+    display: none;
+  }
+
+  .login-input {
+    width: auto;
+  }
+
+  .login-box {
+    padding: 10px;
+    width: 80vw;
+  }
+
+  .login-subheader {
+    max-width: 80vw;
+    text-align: center;
+  }
 }
