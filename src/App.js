@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Drawer, Provider, Hide, Image, Button, TopNav, PageWithSidebar, Provider as BumbagProvider } from 'bumbag';
 import './App.css';
 import Sidebar from './components/layout/Sidebar.js';
@@ -11,6 +11,7 @@ import {
 import Dashboard from './components/view/Dashboard.js'; // Homepage
 import Submit from './components/view/Submit.js';
 import Deliveries from './components/view/Deliveries.js';
+import Delivery from './components/view/Delivery.js';
 import Live from './components/view/Live.js';
 import User from './components/view/User.js';
 import Login from './components/view/Login.js';
@@ -18,15 +19,12 @@ import Error404 from './components/view/404.js';
 import { FiMenu } from 'react-icons/fi';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAuth0 } from '@auth0/auth0-react';
 
-import firebase from './providers/firebase';
-import {
-  FirebaseAuthProvider,
-  FirebaseAuthConsumer,
-  IfFirebaseAuthed,
-  IfFirebaseUnAuthed
-} from "@react-firebase/auth";
-import { FirebaseDatabaseProvider } from "@react-firebase/database";
+import Parse from 'parse';
+
+Parse.initialize("fwho6GN4ecELXiTOIf9zmLn4OB4EUfze1eTPWF6v","pJTCLMMQqHBQk9Xrorc3OVTp25tMxIxGLZf8AAxt"); //PASTE HERE YOUR Back4App APPLICATION ID AND YOUR JavaScript KEY
+Parse.serverURL = 'https://parseapi.back4app.com/'
 
 const theme = {
   fonts: {
@@ -37,73 +35,68 @@ const theme = {
     primary: '#008aff'
   }
 }
-
 toast.configure()
 
-export default () => (
-  <FirebaseAuthProvider firebase={firebase}>
-    <FirebaseAuthConsumer>
-      <IfFirebaseAuthed>
-        <FirebaseDatabaseProvider>
-          <Provider theme={theme}>
-            <Router>
-              <BumbagProvider theme={theme}>
-                <PageWithSidebar
-                  backgroundColor="default"
-                  sidebarWidth="5vw"
-                  sidebar={<Sidebar />}>
-                    <Hide above="mobile">
-                    <TopNav style={{backgroundColor:"#171A1F"}}>
-                      <TopNav.Section>
-                          <Drawer.State>
-                            <Drawer.Disclosure><FiMenu color="white" /></Drawer.Disclosure>
-                              <Drawer>
-                                <Sidebar style={{width: "100%"}} />
-                              </Drawer>
-                          </Drawer.State>
-                      </TopNav.Section>
-                      <TopNav.Section>
-                      </TopNav.Section>
-                    </TopNav>
-                  </Hide>                    
-                  <button
-                    onClick={() => {
-                      firebase.auth().signOut().then(() => {
-                        toast.success(`Logged out!`, {
-                          position: "top-right",
-                          autoClose: 5000,
-                          hideProgressBar: false,
-                          closeOnClick: true,
-                          pauseOnHover: true,
-                          draggable: true,
-                          progress: undefined,
-                       });
-                      });
-                    }}
-                  >Sign out</button>
-                  <Switch>
-                    <Route exact path="/" component={Dashboard} />
-                    <Route exact path="/home" component={Dashboard} />
-                    <Route exact path="/submit" component={Submit} />
-                    <Route exact path="/live" component={Live} />
-                    <Route exact path="/deliveries" component={Deliveries} />
-                    <Route exact path={`/user/:userId`} component={User}/>
-                    
-                    <Route path="/404" component={Error404} />
+function App() {
+  const {
+    isLoading,
+    isAuthenticated,
+    error,
+    user,
+    loginWithRedirect,
+    logout,
+  } = useAuth0();
+  
 
-                    <Redirect to="/404" />
-                  </Switch>
-                </PageWithSidebar>
-              </BumbagProvider>
-            </Router>
-          </Provider>
-        </FirebaseDatabaseProvider>
-      </IfFirebaseAuthed>
-      <IfFirebaseUnAuthed>
+  // const userAuthenticated = Parse.User.currentAsync().then((result) => setAuthToken(result.attributes.sessionToken))
+  
+  console.log(user);
+  return (
+    <Provider theme={theme}>
+      <Router>
         <BumbagProvider theme={theme}>
-          <Login />
+          
+          {!isAuthenticated ?  
+            <Login />    
+          : 
+            <PageWithSidebar
+              backgroundColor="default"
+              sidebarWidth="5vw"
+              sidebar={<Sidebar />}>
+                <Hide above="mobile">
+                <TopNav style={{backgroundColor:"#eee"}}>
+                  <TopNav.Section>
+                      <Drawer.State>
+                        <Drawer.Disclosure><FiMenu color="#272727" size="10vw" /></Drawer.Disclosure>
+                          <Drawer>
+                            <Sidebar />
+                          </Drawer>
+                      </Drawer.State>
+                  </TopNav.Section>
+                  <TopNav.Section>
+                  </TopNav.Section>
+                </TopNav>
+              </Hide>       
+              <Switch>
+                <Route exact path="/">
+                  <Redirect to="/home" />
+                </Route>
+                <Route exact path="/home" component={Dashboard} />
+                <Route exact path="/submit" component={Submit} />
+                <Route exact path="/live" component={Live} />
+                <Route exact path="/deliveries" component={Deliveries} />
+                <Route exact path={`/deliveries/:jobId`} component={Delivery} />
+                <Route exact path={`/user/:userId`} component={User}/>
+                
+                <Route path="/404" component={Error404} />
+  
+                <Redirect to="/404" />
+              </Switch>
+            </PageWithSidebar>
+          }
         </BumbagProvider>
-      </IfFirebaseUnAuthed>
-    </FirebaseAuthConsumer>
-  </FirebaseAuthProvider>
-)
+      </Router>
+    </Provider>
+  )
+}
+export default App;

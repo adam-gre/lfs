@@ -4,6 +4,7 @@ import Skeleton from "react-loading-skeleton";
 import { FaTrophy, FaTruck, FaCalendar } from 'react-icons/fa';
 import { MdAnnouncement } from 'react-icons/md';
 import EventCalendar from '../Calendar.js';
+import Parse from 'parse';
 
 class Dashboard extends Component {
     state = {

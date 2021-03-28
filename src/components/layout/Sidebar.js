@@ -1,49 +1,66 @@
 import React from 'react';
 import { Image, Stack, Box } from 'bumbag';
 import {
-    Link
+    NavLink
 } from "react-router-dom";
 import { FaHome, FaTruck } from 'react-icons/fa';
 import { AiOutlineForm } from 'react-icons/ai';
 import { IoMdSettings } from 'react-icons/io'
-import logo from '../../lfs_arrows_white.png';
+import userEvent from '@testing-library/user-event';
+import { useAuth0 } from '@auth0/auth0-react';
+var logo = require('../../assets/logo_arrows_light.png');
+var logo_dark = require('../../assets/logo_arrows_dark.png');
 
-const Sidebar = () => (
-    <Box height="100%" backgroundColor="#171A1F" paddingTop="2vh" paddingBottom="2vh">
-        <Stack alignX="center" height="100vh" orientation="vertical">
-            <Link to="/home">
-                <Image
-                    fit="contain"
-                    height="2.5vw"
-                    width="2.5vw"
-                    src={logo}
-                    alt="LFS"
-                />
-            </Link>
-            <Link to="/home">
-                <Box className="nav-box" alignY="center" alignX="center">
-                    <FaHome size="2vw" className="nav-item" />
-                </Box>
-            </Link>
-            <Link to="/deliveries">
-                <Box className="nav-box" alignY="center" alignX="center">
-                    <FaTruck size="2vw" className="nav-item" />
-                </Box>
-            </Link>
-            <Link to="/submit">
-                <Box className="nav-box" alignY="center" alignX="center">
-                    <AiOutlineForm size="2vw" className="nav-item" />
-                </Box>
-            </Link>
-            <Link to="/settings" marginTop="10vh">
-                <Box className="nav-box" alignY="center" alignX="center">
-                    <IoMdSettings size="2vw" className="nav-item" />
-                </Box>
-            </Link>
-        </Stack>
-    </Box>
-    
-    
-);
+
+  
+function Sidebar() {
+    const {
+        isLoading,
+        isAuthenticated,
+        error,
+        user,
+        loginWithRedirect,
+        logout,
+    } = useAuth0();
+  
+    return (
+        <div className="sidebar" >
+            <Stack alignX="center" height="100vh" orientation="vertical">
+                <img src={logo_dark} height="50px" alt='LFS' />
+                <NavLink to="/user" class="nav-link" activeClassName='active'>
+                    <Image
+                        fit="contain"
+                        height="auto"
+                        width="3vw"
+                        src={user.picture}
+                        alt={user.name}
+                        backgroundColor="whitesmoke"
+                        className="avatar"
+                    />
+                </NavLink>
+                <NavLink to="/home" class="nav-link" activeClassName='active'>
+                    <Box className="nav-box" alignY="center" alignX="center">
+                        <FaHome size={50} className="nav-item" />
+                    </Box>
+                </NavLink>
+                <NavLink to="/deliveries" class="nav-link" activeClassName='active'>
+                    <Box className="nav-box" alignY="center" alignX="center">
+                        <FaTruck size={50} className="nav-item" />
+                    </Box>
+                </NavLink>
+                <NavLink to="/submit" class="nav-link" activeClassName='active'>
+                    <Box className="nav-box" alignY="center" alignX="center">
+                        <AiOutlineForm size={50} className="nav-item" />
+                    </Box>
+                </NavLink>
+                <NavLink to="/settings" marginTop="10vh" class="nav-link" activeClassName='active'>
+                    <Box className="nav-box" alignY="center" alignX="center">
+                        <IoMdSettings size={50} className="nav-item" />
+                    </Box>
+                </NavLink>
+            </Stack>
+        </div>
+    );
+};
 
 export default Sidebar;

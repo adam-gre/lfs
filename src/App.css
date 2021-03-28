@@ -74,19 +74,35 @@ p {
 }
 
 .nav-item {
-  color: white;
+  color: #272727;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+}
+
+.nav-item:hover {
+  color: #272727;
+  transition: filter 0.2s;
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
+}
+
+/* height="100%" backgroundColor="#171A1F" paddingTop="2vh" paddingBottom="2vh" */
+.sidebar {
+  height: 100%;
+  background-color: #eee;
+  box-shadow: inset -1px -1px 10px -1px rgba(0,0,0,0.1);
+  padding-top: 2vh;
+  padding-bottom: 2vh;
 }
 
 .nav-box {
   height: 3.5vw;
-  width: 3.5vw;
+  width: 100%;
   text-align: center;
   vertical-align: middle;
-  background-color: #292929!important;
 }
 
-.nav-box.active {
-  background-color: #3A3A3A!important;
+.active {
+  width: 100%;
+  border-left: 5px solid #008aff;
 }
 
 .rbc-event {
@@ -103,11 +119,27 @@ p {
 .bg-blob-1 {
   position: absolute;
   z-index: 0;
+  animation: hover 10s infinite ease-in-out reverse;
+  overflow: hidden;
 }
 
 .bg-blob-2 {
   position: absolute;
   z-index: 0;
+  animation: hover 5s infinite ease-in-out;
+  overflow: hidden;
+}
+
+@keyframes hover {
+  0% {
+    transform: translateY(-20px) translateX(-5px);
+  }
+  50% {
+    transform: translateY(10px) translateX(-15px);
+  }
+  100% {
+    transform: translateY(-20px) translateX(-5px);
+  }
 }
 
 @media only screen and (min-width: 1280px) {
@@ -167,4 +199,21 @@ p {
     max-width: 80vw;
     text-align: center;
   }
+
+  .nav-box {
+    width: 100%;
+    min-width: 200px;
+  }
+
+}
+
+.avatar {
+  border-radius: 50%;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+}
+
+.avatar:hover {
+  border-radius: 50%;
+  transition: filter 0.2s;
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
 }

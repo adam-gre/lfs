@@ -2,6 +2,8 @@ import React, { Component, Async } from 'react';
 import { Flex, Set, OptionButtons, Checkbox, Divider, Card, Container, Heading, Columns, InputField, Text, Autosuggest, Input, Button, FieldStack, SelectMenuField, SelectMenu } from 'bumbag';
 import firebase from "firebase";
 import { toast } from 'react-toastify';
+var Parse = require('parse/node');
+// import Discord from '../../providers/DiscordWebhook';
 
 class Submit extends React.Component {
     constructor(props) {
@@ -35,34 +37,26 @@ class Submit extends React.Component {
     }
 
     handleSubmit = (e) => {
-        var db = firebase.database();
-        db.ref('jobs/').push({
-            user: firebase.auth().currentUser.uid,
-            game: this.state.game,
-            startCity: this.state.startCity,
-            endCity: this.state.endCity,
-            distance: this.state.distance,
-            cargo: this.state.cargo,
-            mass: this.state.mass,
-            damage: this.state.damage,
-            income: this.state.income,
-            notes: this.state.notes,
-            truckersmp: this.state.truckersmp,
-            convoy: this.state.convoy,
-            confirm: this.state.confirm
-          }, (error) => {
-            if (error) {
-                toast.error(`An error occurred!`, {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-              console.log(error)
-            } else {
+        const Job = Parse.Object.extend("Deliveries");
+        const job = new Job();
+
+        job.set("user", "User");
+        job.set("game", this.state.game);
+        job.set("startCity", this.state.startCity);
+        job.set("endCity", this.state.endCity);
+        job.set("distance", this.state.distance);
+        job.set("cargo", this.state.cargo);
+        job.set("mass", this.state.mass);
+        job.set("damage", this.state.damage);
+        job.set("income", this.state.income);
+        job.set("notes", this.state.notes);
+        job.set("truckersmp", this.state.truckersmp);
+        job.set("convoy", this.state.convoy);
+        job.set("confirm", this.state.confirm);
+
+        job.save()
+            .then((job) => {
+                // Success
                 toast.success(`Job submitted!`, {
                     position: "top-right",
                     autoClose: 5000,
@@ -72,8 +66,18 @@ class Submit extends React.Component {
                     draggable: true,
                     progress: undefined,
                 });
-            }
-          });
+            }, (error) => {
+                // Save fails
+                toast.error(`An error occurred!<br>${error.message}`, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            });
     }
 
     render () {
