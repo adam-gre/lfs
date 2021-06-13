@@ -217,3 +217,28 @@ p {
   transition: filter 0.2s;
   filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
 }
+
+
+input.form-control {
+
+  -webkit-appearance: none;
+  background: var(--bb-palette-white, #ffffff);
+  color: var(--bb-palette-text, #000000);
+  height: 2.75em;
+  width: 100%;
+  -webkit-transition: box-shadow 0.1s ease-in-out 0s,border-color 0.1s,background-color 0.1s;
+  transition: box-shadow 0.1s ease-in-out 0s,border-color 0.1s,background-color 0.1s;
+  border: 1px solid var(--bb-palette-white900, #000000);
+  border-radius: 6px;
+  padding: 0.4em 0.8em;
+  position: unset;
+  font: unset;
+  font-family: inherit;
+  font-size: 100%;
+  box-sizing: border-box;
+}
+
+datalist {
+  background-color: #ffffff;
+  border-radius: 6px;
+}

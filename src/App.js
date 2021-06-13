@@ -17,14 +17,10 @@ import User from './components/view/User.js';
 import Login from './components/view/Login.js';
 import Error404 from './components/view/404.js';
 import { FiMenu } from 'react-icons/fi';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth0 } from '@auth0/auth0-react';
 
-import Parse from 'parse';
-
-Parse.initialize("fwho6GN4ecELXiTOIf9zmLn4OB4EUfze1eTPWF6v","pJTCLMMQqHBQk9Xrorc3OVTp25tMxIxGLZf8AAxt"); //PASTE HERE YOUR Back4App APPLICATION ID AND YOUR JavaScript KEY
-Parse.serverURL = 'https://parseapi.back4app.com/'
 
 const theme = {
   fonts: {
@@ -38,6 +34,7 @@ const theme = {
 toast.configure()
 
 function App() {
+  
   const {
     isLoading,
     isAuthenticated,
@@ -46,11 +43,9 @@ function App() {
     loginWithRedirect,
     logout,
   } = useAuth0();
-  
 
-  // const userAuthenticated = Parse.User.currentAsync().then((result) => setAuthToken(result.attributes.sessionToken))
-  
   console.log(user);
+
   return (
     <Provider theme={theme}>
       <Router>
@@ -76,7 +71,7 @@ function App() {
                   <TopNav.Section>
                   </TopNav.Section>
                 </TopNav>
-              </Hide>       
+              </Hide>    
               <Switch>
                 <Route exact path="/">
                   <Redirect to="/home" />

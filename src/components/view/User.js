@@ -11,7 +11,8 @@ class User extends Component {
         this.state = {
           error: null,
           isLoaded: false,
-          items: []
+          items: [],
+          data: {}
         };
     };
 
@@ -56,7 +57,8 @@ class User extends Component {
 
                 }]
             }
-        });
+        })
+        document.title = `${this.state.data.username || "User"} | Legacy Freight Services`;
     }
     
     render() {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Container, Text } from 'bumbag';
 
+document.title ="Error | Legacy Freight Services";
 const Error404 = () => (
     <Container isFluid>
         <Box alignY="center" alignX="center" border="none" height="100vh">

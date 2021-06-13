@@ -1,229 +1,214 @@
-import React, { Component, Async } from 'react';
-import { Flex, Set, OptionButtons, Checkbox, Divider, Card, Container, Heading, Columns, InputField, Text, Autosuggest, Input, Button, FieldStack, SelectMenuField, SelectMenu } from 'bumbag';
-import firebase from "firebase";
+import React, { useEffect, useState } from 'react';
+import { Flex, Set, OptionButtons, Checkbox, Divider, Card, Container, Heading, Columns, InputField, Text, Autosuggest, Input, Button, FieldStack, SelectMenuField, SelectMenu, Label } from 'bumbag';
 import { toast } from 'react-toastify';
-var Parse = require('parse/node');
+import { getAllCities, getAllJobs, createJob, deleteJob, getAllCargo, getAllCompanies } from '../../api';
+import ReactLargeDatalist from 'react-large-datalist';
+import { useAuth0 } from '@auth0/auth0-react';
+import Select from 'react-select'
 // import Discord from '../../providers/DiscordWebhook';
 
-class Submit extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-            game: '',
-            startCity: '',
-            endCity: '',
-            distance: 0,
-            cargo: '',
-            mass: 0,
-            damage: 0,
-            income: 0,
-            notes: '',
-            truckersmp: false,
-            convoy: false,
-            confirm: false
-        };
+
+function Submit() {
+    const [cities, setCities] = useState([]);
+    const [cargo, setCargo] = useState([]);
+    const [sourceCityData, setSourceCityData] = useState({});
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [totalRows, setTotalRows] = useState(0);
+    const [after, setAfter] = useState();
+    const [companies, setCompanies] = useState([]);
+
+
+    const [state, setState] = useState({});
+    const hasConfirmed = state.confirm || false;
   
-      this.handleChange = this.handleChange.bind(this);
-    }
+    const {
+      isLoading,
+      isAuthenticated,
+      error,
+      user,
+      loginWithRedirect,
+      logout,
+    } = useAuth0();
+  
+  
 
-    handleChange = (e) => {
-        const {name , value, checked, type} = e.target   
-        this.setState(prevState => ({
-            ...prevState,
-            [name] : type === "checkbox" ? checked : value
-        }))
-
-        // console.log(this.state)
-    }
-
-    handleSubmit = (e) => {
-        const Job = Parse.Object.extend("Deliveries");
-        const job = new Job();
-
-        job.set("user", "User");
-        job.set("game", this.state.game);
-        job.set("startCity", this.state.startCity);
-        job.set("endCity", this.state.endCity);
-        job.set("distance", this.state.distance);
-        job.set("cargo", this.state.cargo);
-        job.set("mass", this.state.mass);
-        job.set("damage", this.state.damage);
-        job.set("income", this.state.income);
-        job.set("notes", this.state.notes);
-        job.set("truckersmp", this.state.truckersmp);
-        job.set("convoy", this.state.convoy);
-        job.set("confirm", this.state.confirm);
-
-        job.save()
-            .then((job) => {
-                // Success
-                toast.success(`Job submitted!`, {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }, (error) => {
-                // Save fails
-                toast.error(`An error occurred!<br>${error.message}`, {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            });
-    }
-
-    render () {
-        // const [source, setSource] = React.useState();
-        // const [destination, setDestination] = React.useState();
-        // const [game, setGame] = React.useState('ets2');
-        // const getCities = React.useCallback(async () => {
-        //     if (game === "ets2") {
-        //         return fetch(`https://api.truckyapp.com/v2/map/cities/ets2`)
-        //             .then(res => res.json())
-        //             .then(({ response }) => ({
-        //                 options: response.map(city => ({ key: city._id, label: city.realName, value: city.realName }))
-        //             }))
-        //             .catch(err => ({options: "error"}));
-        //     } else if (game === "ats") {
-        //         return fetch(`https://api.truckyapp.com/v2/map/cities/ats`)
-        //             .then(res => res.json())
-        //             .then(({ response }) => ({
-        //                 options: response.map(city => ({ key: city._id, label: city.realName, value: city.realName }))
-        //             }))
-        //             .catch(err => ({options: "error"}));
-        //     } else {
-        //         return console.log("error");
-        //     }
-        //   }, [game])
-
-        return (
-            <Container isFluid padding="major-4">
-                <Flex marginBottom="30px">
-                    <Heading use="h4" alignX="left" alignY="center">Submit job</Heading> 
-                    <Set marginLeft="auto">
-                        <OptionButtons
-                            alignX="right"
-                            onChange={this.handleChange}
-                            // value={game}
-                            type="radio"
-                            name="game"
-                            options={[
-                                { label: 'ETS2', value: 'ets2' },
-                                { label: 'ATS', value: 'ats' }
-                            ]}
-                        />
-                    </Set>
-                </Flex>
-                <Columns>
-                    <Columns.Column>    
-                        <Card standalone variant="shadowed" marginBottom="15px">
-                            <FieldStack>
-                                <Heading use="h5" marginBottom="30px">Route</Heading> 
-                                <FieldStack orientation="horizontal">
-                                    <SelectMenuField
-                                        defer
-                                        name="startCity"
-                                        cacheKey="basic"
-                                        label="Source city"
-                                        onChange={this.handleChange}
-                                        // loadOptions={getCities}
-                                        placeholder="Select a fruit..."
-                                        // value={source}
-                                    />    
-                                    {/* <Async loadOptions={getCities}/> */}
-                                    <SelectMenuField
-                                        defer
-                                        name="endCity"
-                                        label="Destination city"
-                                        onChange={this.handleChange}
-                                        // value={destination}
-                                        // loadOptions={getCities}
-                                        placeholder="Select city..."
-                                    />    
-                                    </FieldStack>                         
-                                    <InputField type="number" label="Route distance" placeholder="Enter distance..." addonAfter={<Button isStatic>miles</Button>}
-                                        onChange={this.handleChange}
-                                        name="distance" />
-
-                            </FieldStack>
-                        </Card>
-                    </Columns.Column>
-                    <Columns.Column>  
-                        <Card standalone variant="shadowed" marginBottom="15px">
-                            <FieldStack>
-                                <Heading use="h5" marginBottom="30px">Cargo</Heading> 
-                                <FieldStack orientation="horizontal">
-                                    <SelectMenuField
-                                        label="Cargo"
-                                        options={[
-                                            { key: 1, label: 'Apples', value: 'apples' },
-                                            { key: 2, label: 'Bananas', value: 'bananas' },
-                                            { key: 3, label: 'Oranges', value: 'oranges' },
-                                            { key: 4, label: 'Mangos', value: 'mangos' }
-                                        ]}
-                                        onChange={this.handleChange}
-                                        name="cargo"
-                                        placeholder="Select cargo..."
-                                    />
-                                    <InputField type="number" label="Cargo mass" placeholder="Enter mass..." addonAfter={<Button isStatic>T</Button>} 
-                                        onChange={this.handleChange}
-                                        name="mass" />
-                                    <InputField type="number" label="Cargo damage" placeholder="Enter damage..." addonAfter={<Button isStatic>%</Button>} 
-                                        onChange={this.handleChange}
-                                        name="damage"
-                                        />
-
-                                </FieldStack> 
-                                <FieldStack orientation="horizontal">
-                                    <InputField type="number" label="Income" placeholder="Enter income..."addonBefore={<Button isStatic>£</Button>} 
-                                        onChange={this.handleChange}
-                                        name="income"
-                                        />
-                                </FieldStack>
-                            </FieldStack>
-                        </Card>
-                    </Columns.Column>
-                </Columns>
-                <Card standalone variant="shadowed" marginBottom="15px">
-                    <FieldStack>
-                        <Heading use="h5" marginBottom="30px">Additional</Heading> 
-                        <FieldStack orientation="horizontal">
-                            <InputField type="text" label="Notes" placeholder="Enter any additional details..." 
-                                        onChange={this.handleChange}
-                                        name="notes"
-                                        />
-                        </FieldStack>
-                        <FieldStack orientation="vertical" paddingTop="2vmin">
-                            <Checkbox label="I drove on TruckersMP" 
-                                        onChange={this.handleChange}
-                                        name="truckersmp" />
-                            <Checkbox label="I drove with another LFS driver" 
-                                        onChange={this.handleChange}
-                                        name="convoy" />
-                            <Checkbox label="I confirm that all the above information is correct" 
-                                        onChange={this.handleChange}
-                                        name="confirm" />
-                        </FieldStack>
-                    </FieldStack>
-                </Card>
-                <Columns>
-                    <Columns.Column>
-                        <Button palette="primary" width="100%" color="white" type="submit"
-                            onClick={this.handleSubmit}
-                        >Submit Job</Button>
-                    </Columns.Column>
-                </Columns>
-            </Container>
-        );
+    const update = (name, value) => {
+        let data = state;
+        data[name] = value;
+        setState(data);
+        console.log(data);
     };
-}
+
+    const handleSubmit = () => {
+        let data = state;
+        data.user = user.sub;
+        setState(data);
+        createJob(state, user.name).then((res) => {
+            if (res === true) {
+                toast.success('Job submitted!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            } else {
+                toast.error(`An error occurred!\n${res.message}`, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
+        })
+    }
+
+    useEffect(() => {
+        document.title ="Submit | Legacy Freight Services";
+        getAllCities.then((result) => {
+            var data = result.data.map(city => ({ value: city[0], label: city[0]}))
+            console.log(data)
+            return setCities(data); // sorted alphabetically
+        })
+        getAllCargo.then((result) => {
+            var data = result.data.map(cargo => ({ value: cargo[0], label: cargo[0]}))
+            // console.log(data)
+            return setCargo(data); // sorted alphabetically
+        })
+        getAllCompanies.then((result) => {
+            var data = result.data.map(company => ({ value: company.data.name, label: company.data.name}))
+            console.log(data)
+            return setCompanies(data);
+        })
+      }, []);
+  
+    
+    return (
+        <Container isFluid padding="major-4">
+            <Flex marginBottom="30px">
+                <Heading use="h4" alignX="left" alignY="center">Submit job</Heading> 
+            </Flex>
+            <Columns>
+                <Columns.Column>    
+                    <Card standalone variant="shadowed" marginBottom="15px">
+                        <FieldStack>
+                            <Heading use="h5" marginBottom="30px">Route</Heading> 
+                            <FieldStack orientation="horizontal">
+                                <Columns.Column style={{padding: 0}}>  
+                                    <Label>Start city</Label>
+                                    <Select 
+                                        options={cities}
+                                        onChange={(value) => update("start_city", value.value)} />
+                                    {/* <ReactLargeDatalist
+                                        id="start_city"
+                                        options={cities}
+                                        disabled={false}
+                                        onChange={(value) => update("start_city", value)}
+                                        // onCreate={(newValue)=>{console.log("Created value", newValue)}}
+                                        createButtonStyle={{display: "none", opacity: 0}}
+                                        label="Start city"
+                                        className="bb-Input"
+                                    /> */}
+                                </Columns.Column>  
+                                <Columns.Column style={{padding: 0}}>  
+                                    <Label>Destination city</Label>
+                                    <Select options={cities}
+                                        onChange={(value) => update("end_city", value.value)} />
+                                </Columns.Column>
+                            </FieldStack>              
+                            <FieldStack orientation="horizontal">
+                                <Columns.Column style={{padding: 0}}>  
+                                    <Label>Start company</Label>
+                                    <Select options={companies}
+                                        onChange={(value) => update("start_company", value.value)} />
+                                </Columns.Column>  
+                                <Columns.Column style={{padding: 0}}>  
+                                    <Label>Destination company</Label>
+                                    <Select options={companies}
+                                        onChange={(value) => update("end_company", value.value)} />
+                                </Columns.Column>
+                            </FieldStack>                         
+                        <InputField
+                            name="distance" 
+                            type="number"
+                            label="Route distance"
+                            placeholder="Enter distance..."
+                            addonAfter={<Button isStatic>miles</Button>}
+                            onChange={(e) => update("distance", e.target.value)}
+                            />
+
+                        </FieldStack>
+                    </Card>
+                </Columns.Column>
+                <Columns.Column>  
+                    <Card standalone variant="shadowed" marginBottom="15px">
+                        <FieldStack>
+                            <Heading use="h5" marginBottom="30px">Cargo</Heading> 
+                            <FieldStack orientation="horizontal">
+                                <Columns.Column style={{paddingLeft: 0}}>  
+                                    <Label>Cargo</Label>
+                                    <Select options={cargo}
+                                        onChange={(value) => update("cargo", value.value)} />
+                                </Columns.Column>
+                                <InputField
+                                    type="number"
+                                    label="Cargo mass"
+                                    placeholder="Enter mass..."
+                                    addonAfter={<Button isStatic>T</Button>} 
+                                    onChange={(e) => update("mass", e.target.value)}
+                                    />
+                                <InputField type="number" label="Cargo damage" placeholder="Enter damage..." addonAfter={<Button isStatic>%</Button>} 
+                                    onChange={(e) => update("damage", e.target.value)}
+                                    name="damage"
+                                    />
+
+                            </FieldStack> 
+                            <FieldStack orientation="horizontal">
+                                <InputField type="number" label="Income" placeholder="Enter income..."addonBefore={<Button isStatic>£</Button>}
+                                    onChange={(e) => update("income", e.target.value)}
+                                    name="income"
+                                    />
+                            </FieldStack>
+                        </FieldStack>
+                    </Card>
+                </Columns.Column>
+            </Columns>
+            <Card standalone variant="shadowed" marginBottom="15px">
+                <FieldStack>
+                    <Heading use="h5" marginBottom="30px">Additional</Heading> 
+                    <FieldStack orientation="horizontal">
+                        <InputField type="text" label="Notes" placeholder="Enter any additional details..." 
+                            onChange={(e) => update("notes", e.target.value)}
+                            name="notes"
+                        />
+                    </FieldStack>
+                    <FieldStack orientation="vertical" paddingTop="2vmin">
+                        <Checkbox label="I drove on TruckersMP / Official Multiplayer" 
+                            onChange={(e) => update("multiplayer", e.target.checked)}
+                            name="truckersmp" />
+                        <Checkbox label="I drove with another LFS driver" 
+                            onChange={(e) => update("convoy", e.target.checked)}
+                            name="convoy" />
+                        <Checkbox label="I confirm that all the above information is correct" 
+                            onChange={(e) => update("confirm", e.target.checked)}
+                            name="confirm" />
+                    </FieldStack>
+                </FieldStack>
+            </Card>
+            <Columns>
+                <Columns.Column>
+                    <Button palette="primary" width="100%" color="white" type="submit"
+                        onClick={handleSubmit} 
+                    >Submit Job</Button>
+                </Columns.Column>
+            </Columns>
+        </Container>
+    );
+};
 
 export default Submit;

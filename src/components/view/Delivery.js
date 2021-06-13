@@ -69,6 +69,8 @@ class Deliveries extends React.Component {
   }
 
   componentDidMount(){
+    document.title ="Delivery | Legacy Freight Services";
+
     const ref = firebase.database().ref("jobs/");
 
     ref.once("value")

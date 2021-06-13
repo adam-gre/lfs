@@ -4,58 +4,67 @@ import DataTable from 'react-data-table-component';
 import Skeleton from "react-loading-skeleton";
 import { FaTemperatureHigh } from 'react-icons/fa';
 import { getAllJobs, countJobs, createJob, deleteJob } from '../../api';
-import { client, q } from '../../config/db';
 var numeral = require("numeral");
 
 const columns = [
   {
+    name: 'Date',
+    selector: 'job.ts',
+    sortable: true,
+  },
+  {
     name: 'User',
-    selector: 'data.steam_id',
+    selector: 'user.data.user.username',
     sortable: true,
   },
   {
-    name: 'Origin',
-    selector: 'data.start_city',
+    name: 'Start Company',
+    selector: `job.data.start_company`,
     sortable: true,
   },
   {
-    name: 'Destination',
-    selector: 'data.end_city',
+    name: 'Start City',
+    selector: `job.data.start_city`,
     sortable: true,
   },
   {
-    name: 'Game',
-    selector: 'data.game',
+    name: 'End Company',
+    selector: 'job.data.end_company',
+    sortable: true,
+  },
+  {
+    name: 'End City',
+    selector: 'job.data.end_city',
     sortable: true,
   },
   {
     name: 'Distance',
-    selector: 'data.distance',
+    selector: 'job.data.distance',
     sortable: true,
   },
   {
     name: 'Mass',
-    selector: 'data.weight',
+    selector: 'job.data.mass',
     sortable: true,
   },
   {
     name: 'Damage',
-    selector: 'data.damage',
+    selector: 'job.data.damage',
     sortable: true,
   },
   {
     name: 'Income',
-    selector: 'data.income',
+    selector: 'job.data.income',
     sortable: true,
   },
   {
     name: 'Multiplayer',
-    selector: 'data.truckersmp',
+    selector: 'job.data.truckersmp',
     sortable: true,
   },
   {
     name: 'Convoy',
-    selector: 'data.convoy',
+    selector: 'job.data.convoy',
     sortable: true,
   },
 ];
@@ -69,8 +78,10 @@ function Deliveries() {
 
 
   useEffect(() => {
+    document.title ="Deliveries | Legacy Freight Services";
+    
     getAllJobs(rowsPerPage, after).then((result) => {
-      // console.log(result.data.length)
+      console.log(result)
       return setJobs(result);
     })
     countJobs.then((result) => {

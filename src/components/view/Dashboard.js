@@ -53,6 +53,10 @@ class Dashboard extends Component {
         ]
     };
 
+    componentDidMount() {
+        document.title ="Dashboard | Legacy Freight Services";
+    }
+
     render() {
         var { income, incomeUnit, distance, distanceUnit, events, activity, staffPicks, weekWinner } = this.state;
         return (
