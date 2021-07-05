@@ -156,7 +156,7 @@ export const deleteJob = jobId =>
         .catch(error => console.error('Error: ', error.message));
 
 
-export const getJobsByUser = userId => 
+export const getJobsByUser = (userId, rowsPerPage, after) => 
     client.query(
       q.Map(
         q.Paginate(q.Match(q.Index('deliveries_by_user'), userId)), 
