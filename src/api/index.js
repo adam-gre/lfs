@@ -22,15 +22,18 @@ export const getAllJobs = (rowsPerPage, after) => client
         q.Lambda("X", q.Let(
             {
               job: q.Get(q.Var('X')),
-              user: q.Get(q.Match(q.Index('user_by_id'), q.Select(['data','user'], q.Var('job'))))
+              user: q.Get(q.Match(q.Index('user_by_id'), q.Select(['data','user'], q.Var('job')))),
+              ts: q.Epoch(q.Select(['ts'], q.Var('job')), "microsecond")
             },
             {
               job: q.Var('job'),
-              user: q.Var('user')
+              user: q.Var('user'),
+              ts: q.Format('%tm/%td/%ty %tH:%tM', q.Var('ts'), q.Var('ts'), q.Var('ts'), q.Var('ts'), q.Var('ts'))
             }
           )
         )
     )
+    
     // {
     //   "ref": Ref(Collection("jobs"), "300589065983492613"),
     //   "ts": 1622922922080000,

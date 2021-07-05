@@ -9,7 +9,7 @@ var numeral = require("numeral");
 const columns = [
   {
     name: 'Date',
-    selector: 'job.ts',
+    selector: 'ts',
     sortable: true,
   },
   {
