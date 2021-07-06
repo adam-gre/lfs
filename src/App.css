@@ -74,12 +74,12 @@ p {
 }
 
 .nav-item {
-  color: #272727;
+  /* color: #272727; */
   filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
 }
 
 .nav-item:hover {
-  color: #272727;
+  /* color: #272727; */
   transition: filter 0.2s;
   filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
 }
@@ -87,7 +87,7 @@ p {
 /* height="100%" backgroundColor="#171A1F" paddingTop="2vh" paddingBottom="2vh" */
 .sidebar {
   height: 100%;
-  background-color: #eee;
+  /* background-color: #eee; */
   box-shadow: inset -1px -1px 10px -1px rgba(0,0,0,0.1);
   padding-top: 2vh;
   padding-bottom: 2vh;
@@ -114,6 +114,7 @@ p {
   background: linear-gradient(173deg, rgba(0,138,255,1) 0%, rgba(85,175,251,1) 100%)!important;
   color: white;
 }
+
 
 
 .bg-blob-1 {

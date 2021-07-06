@@ -16,6 +16,7 @@ import Live from './components/view/Live.js';
 import User from './components/view/User.js';
 import Login from './components/view/Login.js';
 import Error404 from './components/view/404.js';
+import Settings from './components/view/Settings.js';
 import { FiMenu } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -31,11 +32,9 @@ const theme = {
     primary: '#008aff',
     modes: {
       dark: {
-        background: '#141b2c',
+        background: '#101010',
+        gray900: '#101010',
         text: 'white'
-      },
-      dope: {
-        background: 'hotpink'
       }
     }
   }
@@ -64,11 +63,10 @@ function App() {
             <Login />    
           : 
             <PageWithSidebar
-              backgroundColor="default"
               sidebarWidth="5vw"
               sidebar={<Sidebar />}>
                 <Hide above="mobile">
-                <TopNav style={{backgroundColor:"#eee"}}>
+                <TopNav>
                   <TopNav.Section>
                       <Drawer.State>
                         <Drawer.Disclosure><FiMenu color="#272727" size="10vw" /></Drawer.Disclosure>
@@ -91,6 +89,7 @@ function App() {
                 <Route exact path="/deliveries" component={Deliveries} />
                 <Route exact path={`/deliveries/:jobId`} component={Delivery} />
                 <Route exact path={`/user/:userId`} component={User}/>
+                <Route exact path="/settings" component={Settings} />
                 
                 <Route path="/404" component={Error404} />
   

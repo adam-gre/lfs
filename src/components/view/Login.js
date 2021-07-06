@@ -35,7 +35,7 @@ function Login() {
     } = useAuth0();
     return (
         <>
-        <Container isFluid margin='0' padding='0' height="100vh" backgroundColor="#e9ecf0" className='login-bg'>
+        <Container isFluid margin='0' padding='0' height="100vh" className='login-bg'>
             <img src={blob} height="750vh" width='800vw' className='bg-blob-1' alt='' />
             <img src={blob} height="600vh" className='bg-blob-2' alt='' />
             <Box width="100vw" height="100vh" alignX='center' alignY='center' className='login-box'>
