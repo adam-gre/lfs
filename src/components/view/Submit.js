@@ -17,6 +17,15 @@ function Submit() {
     const [after, setAfter] = useState();
     const [companies, setCompanies] = useState([]);
 
+    const formStyle = {
+        control: styles => ({ ...styles, backgroundColor: 'var(--bb-palette-background)' }),
+        option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+            return {
+            ...styles,
+            backgroundColor: 'var(--bb-palette-background)'
+            };
+        }
+    };
 
     const [state, setState] = useState({});
     const hasConfirmed = state.confirm || false;
@@ -103,34 +112,32 @@ function Submit() {
                                     <Label>Start city</Label>
                                     <Select 
                                         options={cities}
-                                        onChange={(value) => update("start_city", value.value)} />
-                                    {/* <ReactLargeDatalist
-                                        id="start_city"
-                                        options={cities}
-                                        disabled={false}
-                                        onChange={(value) => update("start_city", value)}
-                                        // onCreate={(newValue)=>{console.log("Created value", newValue)}}
-                                        createButtonStyle={{display: "none", opacity: 0}}
-                                        label="Start city"
-                                        className="bb-Input"
-                                    /> */}
+                                        onChange={(value) => update("start_city", value.value)}
+                                        styles={formStyle}
+                                    />
                                 </Columns.Column>  
                                 <Columns.Column style={{padding: 0}}>  
                                     <Label>Destination city</Label>
                                     <Select options={cities}
-                                        onChange={(value) => update("end_city", value.value)} />
+                                        onChange={(value) => update("end_city", value.value)}
+                                        styles={formStyle}
+                                    />
                                 </Columns.Column>
                             </FieldStack>              
                             <FieldStack orientation="horizontal">
                                 <Columns.Column style={{padding: 0}}>  
                                     <Label>Start company</Label>
                                     <Select options={companies}
-                                        onChange={(value) => update("start_company", value.value)} />
+                                        onChange={(value) => update("start_company", value.value)}
+                                        styles={formStyle}
+                                    />
                                 </Columns.Column>  
                                 <Columns.Column style={{padding: 0}}>  
                                     <Label>Destination company</Label>
                                     <Select options={companies}
-                                        onChange={(value) => update("end_company", value.value)} />
+                                        onChange={(value) => update("end_company", value.value)}
+                                        styles={formStyle}
+                                    />
                                 </Columns.Column>
                             </FieldStack>                         
                         <InputField
@@ -153,7 +160,9 @@ function Submit() {
                                 <Columns.Column style={{paddingLeft: 0}}>  
                                     <Label>Cargo</Label>
                                     <Select options={cargo}
-                                        onChange={(value) => update("cargo", value.value)} />
+                                        onChange={(value) => update("cargo", value.value)}
+                                        styles={formStyle}
+                                    />
                                 </Columns.Column>
                                 <InputField
                                     type="number"

@@ -97,7 +97,9 @@ function Deliveries() {
             <Card.Content>
               {
                 jobs.data ?
-                    <DataTable 
+                    <DataTable
+                      title='All jobs'
+                      backgroundColor='background'
                       columns={columns}
                       data={jobs.data}
                       pagination={true}

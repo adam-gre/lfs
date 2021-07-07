@@ -34,7 +34,8 @@ const theme = {
       dark: {
         background: '#101010',
         gray900: '#101010',
-        text: 'white'
+        text: 'white',
+        black100: '#000'
       }
     }
   }
