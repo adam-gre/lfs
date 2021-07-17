@@ -177,3 +177,14 @@ export const getUserById = userId =>
   .then(ret => ret)
   .catch(error => console.error('Error: ', error.message));
 
+
+export const getAllUsers = userId => 
+  client.query(
+    q.Map(
+      q.Paginate(q.Match(q.Index('all_users'))), 
+      q.Lambda("X", q.Get(q.Var("X")))
+    )
+  )
+  .then(ret => ret)
+  .catch(error => console.error('Error: ', error.message));
+

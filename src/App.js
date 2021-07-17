@@ -14,6 +14,7 @@ import Deliveries from './components/view/Deliveries.js';
 import Delivery from './components/view/Delivery.js';
 import Live from './components/view/Live.js';
 import User from './components/view/User.js';
+import Drivers from './components/view/Drivers.js';
 import Login from './components/view/Login.js';
 import Error404 from './components/view/404.js';
 import Settings from './components/view/Settings.js';
@@ -30,12 +31,28 @@ const theme = {
   },
   palette: {
     primary: '#008aff',
+    ceo: '#008aff',
+    coo: '#008aff',
+    hr: '#4cc4be',
+    at: '#7199d6',
+    et: '#7667d1',
+    mt: '#ffac00',
+    dev: '#74ce42',
+    legend: '#a5f4ff',
+    master: '#72efff',
+    veteran: '#40e8ff',
+    professional: '#40cdff',
+    experienced: '#38b0ff',
+    skilled: '#0099ff',
+    rookie: '#0085eb',
+    trainee: '#0080d4',
     modes: {
       dark: {
         background: '#101010',
         gray900: '#101010',
         text: 'white',
-        black100: '#000'
+        black100: '#000',
+        white600: '#121212'
       }
     }
   }
@@ -90,6 +107,7 @@ function App() {
                 <Route exact path="/deliveries" component={Deliveries} />
                 <Route exact path={`/deliveries/:jobId`} component={Delivery} />
                 <Route exact path={`/user/:userId`} component={User}/>
+                <Route exact path="/drivers" component={Drivers}  />
                 <Route exact path="/settings" component={Settings} />
                 
                 <Route path="/404" component={Error404} />

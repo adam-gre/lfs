@@ -3,7 +3,7 @@ import { Image, Stack, Box, useColorMode, Set, Button, Icon } from 'bumbag';
 import {
     NavLink
 } from "react-router-dom";
-import { faHome, faThList, faTruckLoading, faCog, faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faThList, faTruckLoading, faCog, faMoon, faSun, faUsers } from '@fortawesome/free-solid-svg-icons';
 import userEvent from '@testing-library/user-event';
 import { useAuth0 } from '@auth0/auth0-react';
 var logo_light = require('../../assets/logo_arrows_light.png');
@@ -60,6 +60,11 @@ function Sidebar() {
                 <NavLink to="/submit" class="nav-link" activeClassName='active'>
                     <Box className="nav-box" alignY="center" alignX="center">
                         <Icon aria-label="Submit" icon={faTruckLoading} type="font-awesome" color='text' fontSize='2vw' />
+                    </Box>
+                </NavLink>
+                <NavLink to="/drivers" class="nav-link" activeClassName='active'>
+                    <Box className="nav-box" alignY="center" alignX="center">
+                        <Icon aria-label="Drivers" icon={faUsers} type="font-awesome" color='text' fontSize='2vw' />
                     </Box>
                 </NavLink>
                 <NavLink to="/settings" marginTop="10vh" class="nav-link" activeClassName='active'>
