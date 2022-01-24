@@ -54,7 +54,7 @@ function Dashboard() {
         staffPicks:  [
             {
                 steamId: "76561198183828141",
-                reason: "For being an exceptional [REDACTED] and stealing [REDACTED] from the NSA HQ.",
+                reason: "",
                 addedBy: "76561198183828141"
             },
             {
