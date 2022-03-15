@@ -2,7 +2,7 @@ import { client, q } from '../config/db';
 
 const webhook = require("webhook-discord")
  
-const Hook = new webhook.Webhook("https://canary.discord.com/api/webhooks/656526533913214977/wJcNEw3ZyGEveVp1xzaNOupfgXOIaUj7TyPzitqoqsPqFUw8HFIFnFqBfh4EjdpY4xwf")
+const Hook = new webhook.Webhook("https://canary.discord.com/api/webhooks/656526533913214977/wJcNEw3ZyGEveVp1xzaNOupfgXOIaUj7TyPzitqoqsPqFUw8HFIFnFqBfh4EjdpY4xwf") //Invalid
 
 // Get all jobs
 export const getAllJobs = (rowsPerPage, after) => client
